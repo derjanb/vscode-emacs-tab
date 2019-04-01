@@ -412,16 +412,15 @@ function createCloseBracketRegExp(closeBracket: string): RegExp {
 }
 
 function getTabSize(): number {
-  // TODO: estimate from content
-  return vscode.workspace.getConfiguration('editor').tabSize;
+  // fetch current context tabsize that modified by workspace, editorconfig, ... and so on
+  return vscode.window.activeTextEditor.options.tabSize;
 }
 
 /**
  * @return {boolean} true if hard tab is configured.
  */
 function isUsingHardTab(): boolean {
-  // TODO: estimate from content
-  return !vscode.workspace.getConfiguration('editor').insertSpaces;
+  return !vscode.window.activeTextEditor.options.insertSpaces;
 }
 
 /**
