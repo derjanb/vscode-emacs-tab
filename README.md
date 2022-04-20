@@ -19,3 +19,14 @@ in your `keybindings.json`.
   "when": "editorTextFocus"
 }
 ```
+## Installation
+
+```bash
+npm install -g vsce
+
+git clone https://github.com/derjanb/vscode-emacs-tab.git
+cd vscode-emacs-tab
+npm install
+vsce package
+code --install-extension vscode-emacs-tab-0.0.9.vsix
+```
