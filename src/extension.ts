@@ -299,7 +299,7 @@ function getLanguageConfiguration(id: string): ILanguageConfiguration {
         ext.packageJSON.contributes.languages) {
       const packageLangData = ext.packageJSON.contributes.languages.find(
           (langData) => (langData.id === documentLanguageId));
-      if (packageLangData) {
+      if (packageLangData && packageLangData.configuration) {
         const langConfigFilepath =
             path.join(ext.extensionPath, packageLangData.configuration);
         const s = fs.readFileSync(langConfigFilepath).toString();
@@ -412,15 +412,24 @@ function createCloseBracketRegExp(closeBracket: string): RegExp {
 }
 
 function getTabSize(): number {
-  // fetch current context tabsize that modified by workspace, editorconfig, ... and so on
-  return vscode.window.activeTextEditor.options.tabSize;
+  const tabSize = vscode.window.activeTextEditor.options.tabSize;
+  if (tabSize !== undefined && tabSize !== 'auto') {
+    return tabSize as number;
+  } else {
+    return vscode.workspace.getConfiguration('editor').tabSize;
+  }
 }
 
 /**
  * @return {boolean} true if hard tab is configured.
  */
 function isUsingHardTab(): boolean {
-  return !vscode.window.activeTextEditor.options.insertSpaces;
+  const insertSpaces = vscode.window.activeTextEditor.options.insertSpaces;
+  if (insertSpaces !== undefined && insertSpaces !== 'auto') {
+    return !insertSpaces;
+  } else {
+    return !vscode.workspace.getConfiguration('editor').insertSpaces;
+  }
 }
 
 /**
