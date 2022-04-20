@@ -302,8 +302,10 @@ function getLanguageConfiguration(id: string): ILanguageConfiguration {
       if (packageLangData) {
         const langConfigFilepath =
             path.join(ext.extensionPath, packageLangData.configuration);
+        const s = fs.readFileSync(langConfigFilepath).toString();
+        const langConf = json.parse(s) as ILanguageConfiguration;
         return mergeLanguageConfiguration(
-            json.parse(fs.readFileSync(langConfigFilepath).toString()),
+            langConf,
             additionalConfiguration);
       }
     }
