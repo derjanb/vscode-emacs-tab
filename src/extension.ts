@@ -477,12 +477,12 @@ function createCloseBracketRegExp(closeBracket: string): RegExp | null {
   return createRegExp(str);
 }
 
-function getTabSize(): number {
-  const tabSize = vscode.window.activeTextEditor.options.tabSize;
+function getTabSize(languageId: string): number {
+  const tabSize = vscode.window.activeTextEditor?.options.tabSize;
   if (tabSize !== undefined && tabSize !== 'auto') {
     return tabSize as number;
   } else {
-    return vscode.workspace.getConfiguration('editor').tabSize;
+    return vscode.workspace.getConfiguration('editor', { languageId }).tabSize;
   }
 }
 
@@ -490,7 +490,7 @@ function getTabSize(): number {
  * @return {boolean} true if hard tab is configured.
  */
 function isUsingHardTab(): boolean {
-  const insertSpaces = vscode.window.activeTextEditor.options.insertSpaces;
+  const insertSpaces = vscode.window.activeTextEditor?.options.insertSpaces;
   if (insertSpaces !== undefined && insertSpaces !== 'auto') {
     return !insertSpaces;
   } else {
