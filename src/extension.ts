@@ -363,7 +363,9 @@ function getLanguageConfiguration(id: string): ILanguageConfiguration | null {
   const resourceDir = path.join(__dirname, '../resources');
   const languageDirs = fs.readdirSync(resourceDir);
   for (const languageDir of languageDirs) {
-    const languageName = path.basename(languageDir);
+    // typescript and markdown folders do have a `-basics` suffix  since 475735e0b28634e5fc2d22914037094a7e222fe9
+    const languageName = path.basename(languageDir).replace(/-basics/g, '');
+
     if (languageName == documentLanguageId) {
       // Hit
       const langConfigFilepath =
